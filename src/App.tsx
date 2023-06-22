@@ -2,15 +2,17 @@ import {
   Admin,
   ArrayInput,
   Create,
+  CreateProps,
   Datagrid,
   List,
+  ListProps,
   Resource,
   SimpleForm,
   SimpleFormIterator,
   TextField,
   TextInput,
 } from "react-admin";
-import { useWatch } from "react-hook-form";
+import { useFormState } from "react-final-form";
 import simpleRestProvider from "ra-data-simple-rest";
 
 import "./App.css";
@@ -27,9 +29,9 @@ function App() {
 
 export default App;
 
-function ListPost() {
+function ListPost(props: ListProps) {
   return (
-    <List>
+    <List {...props}>
       <Datagrid>
         <TextField source="name" />
       </Datagrid>
@@ -37,9 +39,9 @@ function ListPost() {
   );
 }
 
-function CreatePost() {
+function CreatePost(props: Omit<CreateProps, "children">) {
   return (
-    <Create>
+    <Create {...props}>
       <SimpleForm>
         <ArrayInput source="lines">
           <SimpleFormIterator>
@@ -58,6 +60,7 @@ function CreatePost() {
 }
 
 function Debug() {
-  const value = useWatch();
-  return <pre>{JSON.stringify(value, null, 2)}</pre>;
+  const { values } = useFormState();
+
+  return <pre>{JSON.stringify(values, null, 2)}</pre>;
 }
